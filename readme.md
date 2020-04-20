@@ -67,4 +67,7 @@ mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
 ```
 
 ## 更新日志
+<<<<<<< HEAD
 2020-04-20:添加github登录模块
+=======
+>>>>>>> origin/master
