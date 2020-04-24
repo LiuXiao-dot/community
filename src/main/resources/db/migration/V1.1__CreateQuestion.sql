@@ -1,15 +1,13 @@
 create table question
 (
-	id int auto_increment,
+	id INT AUTO_INCREMENT PRIMARY KEY NOT NULL default 1,
 	title VARCHAR(50),
 	description TEXT,
 	gmt_create BIGINT,
 	gmt_modified BIGINT,
-	creator int,
+	creator VARCHAR(20),
 	comment_count int default 0,
 	view_count int default 0,
-	like_count int,
-	tag VARCHAR(256),
-	constraint QUESTION_PK
-		primary key (id)
+	like_count int default 0,
+	tag VARCHAR(256)
 );

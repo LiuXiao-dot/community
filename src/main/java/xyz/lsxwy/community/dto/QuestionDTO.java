@@ -1,9 +1,10 @@
-package xyz.lsxwy.community.model;
+package xyz.lsxwy.community.dto;
 
 import lombok.Data;
+import xyz.lsxwy.community.model.User;
 
 @Data
-public class Question {
+public class QuestionDTO {
     private Integer id;
     private String title;
     private String description;
@@ -14,4 +15,5 @@ public class Question {
     private Integer view_count;
     private Integer comment_count;
     private Integer like_count;
+    private User user;
 }

@@ -8,9 +8,12 @@ import xyz.lsxwy.community.model.User;
 
 @Mapper
 public interface UserMapper {
-    @Insert("INSERT INTO USER (account_id, name, token, gmt_create, gmt_modified) VALUES ( #{accountId}, #{name},#{token},#{gmtCreate},#{gmtModified})")
+    @Insert("REPLACE INTO USER (account_id, name, token, gmt_create, gmt_modified,avatar_url) VALUES ( #{account_id}, #{name},#{token},#{gmt_create},#{gmt_modified},#{avatar_url})")
     void insert(User user);
 
     @Select("SELECT * FROM USER WHERE token = #{token}")
     User findByToken(@Param("token") String token);
+
+    @Select("SELECT * FROM USER WHERE account_id = #{account_id}")
+    User findByAccountId(@Param("account_id") String accountId);
 }
