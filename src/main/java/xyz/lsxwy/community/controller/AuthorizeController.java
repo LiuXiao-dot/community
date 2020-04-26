@@ -69,6 +69,8 @@ public class AuthorizeController {
             user.setGmt_modified(user.getGmt_create());
             user.setAvatar_url(githubUser.getAvatar_url());
 
+            System.out.println(user.toString());
+
             userMapper.insert(user);
 
             //登录成功，写cookie 和 session
@@ -78,6 +80,7 @@ public class AuthorizeController {
 //            request.getSession().setAttribute("user", githubUser);
         } else {
             //登录失败，重新登录
+            System.out.println("登录失败");
         }
         return "redirect:/";//重定向回index界面
     }
