@@ -1,5 +1,6 @@
 package xyz.lsxwy.community.controller;
 
+import com.sun.deploy.net.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import xyz.lsxwy.community.model.User;
 import xyz.lsxwy.community.provider.GithubProvider;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
@@ -83,6 +85,17 @@ public class AuthorizeController {
             System.out.println("登录失败");
         }
         return "redirect:/";//重定向回index界面
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request,
+                         HttpServletResponse response)
+    {
+        request.getSession().removeAttribute("user");
+        Cookie cookie = new Cookie("token",null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        return "redirect:/";
     }
 
 }
