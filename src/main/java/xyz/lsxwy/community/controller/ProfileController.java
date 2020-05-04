@@ -44,7 +44,7 @@ public class ProfileController {
             break;
         }
 
-        PaginationDTO paginationDTO = questionService.list(user.getAccount_id(), page, size);
+        PaginationDTO paginationDTO = questionService.list(user.getAccountId(), page, size);
         model.addAttribute("pagination", paginationDTO);
         return "profile";
     }

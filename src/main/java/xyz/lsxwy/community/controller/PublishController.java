@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import xyz.lsxwy.community.mapper.QuestionMapper;
 import xyz.lsxwy.community.model.Question;
 import xyz.lsxwy.community.model.User;
+import xyz.lsxwy.community.service.QuestionService;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -18,6 +20,18 @@ public class PublishController {
     @Autowired
     private QuestionMapper questionMapper;
 
+    @GetMapping("/publish/{id}")
+    public String edit(@PathVariable(name = "id") Integer id,
+                       Model model){
+
+        Question question = questionMapper.selectByPrimaryKey(id);
+        model.addAttribute("title", question.getTitle());
+        model.addAttribute("description", question.getDescription());
+        model.addAttribute("tag", question.getTag());
+        model.addAttribute("id", question.getId());
+        return  "publish";
+    }
+
     @GetMapping("/publish")
     public String publish() {
         return "publish";
@@ -25,9 +39,10 @@ public class PublishController {
 
     @PostMapping("/publish")
     public String doPublish(
-            @RequestParam("title") String title,
-            @RequestParam("description") String description,
-            @RequestParam("tag") String tag,
+            @RequestParam(value = "title",required = false) String title,
+            @RequestParam(value = "description",required = false) String description,
+            @RequestParam(value = "tag",required = false) String tag,
+            @RequestParam(value = "id",required = false) Integer id,
             HttpServletRequest request,
             Model model
     ) {
@@ -60,11 +75,12 @@ public class PublishController {
         question.setTitle(title);
         question.setDescription(description);
         question.setTag(tag);
-        question.setCreator(user.getAccount_id());
-        question.setGmt_create(System.currentTimeMillis());
-        question.setGmt_modified(question.getGmt_create());
+        question.setCreator(user.getAccountId());
+        question.setGmtCreate(System.currentTimeMillis());
+        question.setGmtModified(question.getGmtCreate());
+        question.setId(id);
 
-        questionMapper.create(question);
+        questionMapper.insert(question);
         return "redirect:/";
     }
 }
