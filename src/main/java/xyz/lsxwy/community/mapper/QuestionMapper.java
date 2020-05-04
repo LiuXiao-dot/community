@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import xyz.lsxwy.community.dto.QuestionDTO;
 import xyz.lsxwy.community.model.Question;
 
 import java.util.List;
@@ -25,4 +26,7 @@ public interface QuestionMapper {
 
     @Select("SELECT COUNT(1) FROM QUESTION WHERE creator=#{creator}")
     Integer countByCreator(@Param(value = "creator") String creator);
+
+    @Select("SELECT * from QUESTION WHERE id=#{id}")
+    Question getById(@Param("id") Integer id);
 }

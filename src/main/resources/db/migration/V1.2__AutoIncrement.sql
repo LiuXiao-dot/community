@@ -1,0 +1,1 @@
+alter table question AUTO_INCREMENT=1;
