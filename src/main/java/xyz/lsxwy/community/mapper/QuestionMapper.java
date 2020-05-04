@@ -15,8 +15,14 @@ public interface QuestionMapper {
     public void create(Question question);
 
     @Select("SELECT * from QUESTION LIMIT #{offset},#{size}")
-    List<Question> list(@Param(value = "offset") Integer offset,@Param(value = "size") Integer size);
+    List<Question> listAll(@Param(value = "offset") Integer offset, @Param(value = "size") Integer size);
 
     @Select("SELECT COUNT(1) FROM QUESTION")
     Integer count();
+
+    @Select("SELECT * from QUESTION WHERE creator=#{creator} LIMIT #{offset},#{size}")
+    List<Question> listByCreator(@Param(value = "creator") String creator, @Param(value = "offset") Integer offset, @Param(value = "size") Integer size);
+
+    @Select("SELECT COUNT(1) FROM QUESTION WHERE creator=#{creator}")
+    Integer countByCreator(@Param(value = "creator") String creator);
 }

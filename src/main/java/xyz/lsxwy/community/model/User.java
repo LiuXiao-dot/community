@@ -4,7 +4,6 @@ import lombok.Data;
 /**描述: @Datahui:作用于类上，是以下注解的集合：@ToString @EqualsAndHashCode @Getter @Setter @RequiredArgsConstructor*/
 @Data
 public class User {
-    private Integer id;
     private String name;
     private String account_id;
     private String token;

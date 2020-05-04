@@ -1,7 +1,6 @@
 CREATE TABLE USER
 (
-    id           INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    account_id   VARCHAR(20),
+    account_id   VARCHAR(20) PRIMARY KEY NOT NULL,
     name         VARCHAR(50),
     token        CHAR(36),
     gmt_create   BIGINT,
