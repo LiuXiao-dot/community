@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xyz.lsxwy.community.dto.PaginationDTO;
 import xyz.lsxwy.community.dto.QuestionDTO;
+import xyz.lsxwy.community.exception.CustomizeErrorCode;
+import xyz.lsxwy.community.exception.CustomizeException;
 import xyz.lsxwy.community.mapper.QuestionMapper;
 import xyz.lsxwy.community.mapper.UserMapper;
 import xyz.lsxwy.community.model.Question;
@@ -81,6 +83,10 @@ public class QuestionService {
 
     public QuestionDTO getById(Integer id) {
         Question question = questionMapper.selectByPrimaryKey(id);
+        if(question==null)
+        {
+            throw  new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question, questionDTO);
         UserExample userExample = new UserExample();
