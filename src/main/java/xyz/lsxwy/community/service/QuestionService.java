@@ -8,6 +8,7 @@ import xyz.lsxwy.community.dto.PaginationDTO;
 import xyz.lsxwy.community.dto.QuestionDTO;
 import xyz.lsxwy.community.exception.CustomizeErrorCode;
 import xyz.lsxwy.community.exception.CustomizeException;
+import xyz.lsxwy.community.mapper.QuestionExtMapper;
 import xyz.lsxwy.community.mapper.QuestionMapper;
 import xyz.lsxwy.community.mapper.UserMapper;
 import xyz.lsxwy.community.model.Question;
@@ -27,15 +28,18 @@ public class QuestionService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
+
     public PaginationDTO list(Integer page, Integer size) {
-        Integer totalCount = (int)questionMapper.countByExample(new QuestionExample());
+        Integer totalCount = (int) questionMapper.countByExample(new QuestionExample());
         PaginationDTO paginationDTO = new PaginationDTO();
         paginationDTO.setPagination(totalCount, page, size);
 
         page = paginationDTO.getPage();
         Integer offset = size * (page - 1);
 
-        List<Question> questions = questionMapper.selectByExampleWithRowbounds(new QuestionExample(),new RowBounds(offset, size));
+        List<Question> questions = questionMapper.selectByExampleWithRowbounds(new QuestionExample(), new RowBounds(offset, size));
         List<QuestionDTO> questionDTOS = new ArrayList<QuestionDTO>();
 
         for (Question question : questions) {
@@ -55,7 +59,7 @@ public class QuestionService {
     public PaginationDTO list(String creator, Integer page, Integer size) {
         QuestionExample questionExample = new QuestionExample();
         questionExample.createCriteria().andCreatorEqualTo(creator);
-        Integer totalCount = (int)questionMapper.countByExample(questionExample);
+        Integer totalCount = (int) questionMapper.countByExample(questionExample);
         PaginationDTO paginationDTO = new PaginationDTO();
         paginationDTO.setPagination(totalCount, page, size);
 
@@ -64,7 +68,7 @@ public class QuestionService {
 
         QuestionExample questionExample2 = new QuestionExample();
         questionExample2.createCriteria().andCreatorEqualTo(creator);
-        List<Question> questions = questionMapper.selectByExampleWithRowbounds(questionExample2,new RowBounds(offset, size));
+        List<Question> questions = questionMapper.selectByExampleWithRowbounds(questionExample2, new RowBounds(offset, size));
         List<QuestionDTO> questionDTOS = new ArrayList<QuestionDTO>();
 
         for (Question question : questions) {
@@ -83,9 +87,8 @@ public class QuestionService {
 
     public QuestionDTO getById(Integer id) {
         Question question = questionMapper.selectByPrimaryKey(id);
-        if(question==null)
-        {
-            throw  new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        if (question == null) {
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
         }
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question, questionDTO);
@@ -94,5 +97,12 @@ public class QuestionService {
         List<User> users = userMapper.selectByExample(userExample);
         questionDTO.setUser(users.get(0));
         return questionDTO;
+    }
+
+    public void incView(Integer id) {
+        Question question = new Question();
+        question.setId(id);
+        question.setViewCount(1);
+        questionExtMapper.incView(question);
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import xyz.lsxwy.community.dto.AccessTokenDTO;
 import xyz.lsxwy.community.dto.GithubUser;
+import xyz.lsxwy.community.mapper.UserExtMapper;
 import xyz.lsxwy.community.mapper.UserMapper;
 import xyz.lsxwy.community.model.User;
 import xyz.lsxwy.community.provider.GithubProvider;
@@ -34,6 +35,9 @@ public class AuthorizeController {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserExtMapper userExtMapper;
 
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,
@@ -72,7 +76,8 @@ public class AuthorizeController {
 
             System.out.println(user.toString());
 
-            userMapper.insert(user);
+//            userMapper.insert(user);
+            userExtMapper.replace(user);
 
             //登录成功，写cookie 和 session
             Cookie cookie = new Cookie("token", token);
