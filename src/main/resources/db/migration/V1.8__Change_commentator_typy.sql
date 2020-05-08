@@ -1,0 +1,1 @@
+alter table comment modify commentator varchar(20) not null;

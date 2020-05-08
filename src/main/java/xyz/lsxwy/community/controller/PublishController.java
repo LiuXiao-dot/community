@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import xyz.lsxwy.community.mapper.QuestionExtMapper;
 import xyz.lsxwy.community.mapper.QuestionMapper;
 import xyz.lsxwy.community.model.Question;
 import xyz.lsxwy.community.model.User;
@@ -20,8 +21,11 @@ public class PublishController {
     @Autowired
     private QuestionMapper questionMapper;
 
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
+
     @GetMapping("/publish/{id}")
-    public String edit(@PathVariable(name = "id") Integer id,
+    public String edit(@PathVariable(name = "id") Long id,
                        Model model){
 
         Question question = questionMapper.selectByPrimaryKey(id);
@@ -42,7 +46,7 @@ public class PublishController {
             @RequestParam(value = "title",required = false) String title,
             @RequestParam(value = "description",required = false) String description,
             @RequestParam(value = "tag",required = false) String tag,
-            @RequestParam(value = "id",required = false) Integer id,
+            @RequestParam(value = "id",required = false) Long id,
             HttpServletRequest request,
             Model model
     ) {
@@ -80,7 +84,7 @@ public class PublishController {
         question.setGmtModified(question.getGmtCreate());
         question.setId(id);
 
-        questionMapper.insert(question);
+        questionExtMapper.replace(question);
         return "redirect:/";
     }
 }
