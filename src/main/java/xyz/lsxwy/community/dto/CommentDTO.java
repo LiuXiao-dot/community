@@ -1,17 +1,18 @@
 package xyz.lsxwy.community.dto;
 
 import lombok.Data;
+import xyz.lsxwy.community.model.User;
 
-/**
- * <p>文件名: CommentDTO.java</p>
- * <p>描述: </p>
- * @author 蓝色夏威夷
- * @date 2020/5/5 15:50
- * @version 1.0.0
- */
 @Data
 public class CommentDTO {
-    private Long parentId;
-    private String content;
-    private Integer type;
+
+        private Long id;
+        private Long parentId;
+        private Integer type;
+        private String commentator;
+        private Long gmtCreate;
+        private Long gmtModified;
+        private Long likeCount;
+        private String content;
+        private User user;
 }
