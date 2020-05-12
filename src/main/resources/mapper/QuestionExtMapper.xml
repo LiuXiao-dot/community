@@ -43,4 +43,8 @@
     #{description,jdbcType=LONGVARCHAR})
   </insert>
 
+  <select id="selectRelated" parameterType="xyz.lsxwy.community.model.Question" resultMap="BaseResultMap">
+    select * from QUESTION where id != #{id} and tag regexp #{tag}
+  </select>
+
 </mapper>

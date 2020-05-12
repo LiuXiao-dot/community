@@ -1,0 +1,1 @@
+ALTER TABLE COMMENT ADD comment_xount INT DEFAULT 0;

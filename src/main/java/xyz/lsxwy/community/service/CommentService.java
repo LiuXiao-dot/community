@@ -8,10 +8,7 @@ import xyz.lsxwy.community.dto.CommentDTO;
 import xyz.lsxwy.community.enums.CommentTypeEnum;
 import xyz.lsxwy.community.exception.CustomizeErrorCode;
 import xyz.lsxwy.community.exception.CustomizeException;
-import xyz.lsxwy.community.mapper.CommentMapper;
-import xyz.lsxwy.community.mapper.QuestionExtMapper;
-import xyz.lsxwy.community.mapper.QuestionMapper;
-import xyz.lsxwy.community.mapper.UserMapper;
+import xyz.lsxwy.community.mapper.*;
 import xyz.lsxwy.community.model.*;
 
 import java.util.ArrayList;
@@ -35,6 +32,9 @@ public class CommentService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private CommentExtMapper commentExtMapper;
+
     @Transactional
     public void insert(Comment comment) {
         if (comment.getParentId() == null || comment.getParentId() == 0) {
@@ -51,6 +51,9 @@ public class CommentService {
                 throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
             }
             commentMapper.insert(comment);
+            //增加评论数
+            dbComment.setCommentCount(1);
+            commentExtMapper.incCommentCount(dbComment);
         } else {
             //回复问题
             Question question = questionMapper.selectByPrimaryKey(comment.getParentId());

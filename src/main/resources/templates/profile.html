@@ -26,12 +26,16 @@
                     </div>
                     <div class="media-body">
                         <h4 class="media-heading" th:text="${question.getTitle()}"></h4>
-                        <span th:text="${question.getDescription()}"></span><br>
+                        <span th:text="${question.getDescription()}"></span>
                         <span class="text-desc">
                     <span th:text="${question.commentCount}"></span>个回复·
                     <span th:text="${question.viewCount}"></span>次浏览·
                     <span th:text="${question.likeCount}"></span>个喜欢·
                     <span th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}"></span></span>
+                        <a th:if="${session.user!=null&&session.user.accountId==question.creator}"
+                           th:href="@{'/publish/'+${question.id}}" class="text-desc">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true">编辑</span>
+                        </a>
                     </div>
                 </div>
                 <nav aria-label="Page navigation">

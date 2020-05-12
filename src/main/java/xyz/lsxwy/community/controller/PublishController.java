@@ -1,5 +1,6 @@
 package xyz.lsxwy.community.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import xyz.lsxwy.community.cache.TagCache;
 import xyz.lsxwy.community.mapper.QuestionExtMapper;
 import xyz.lsxwy.community.mapper.QuestionMapper;
 import xyz.lsxwy.community.model.Question;
@@ -26,33 +28,36 @@ public class PublishController {
 
     @GetMapping("/publish/{id}")
     public String edit(@PathVariable(name = "id") Long id,
-                       Model model){
+                       Model model) {
 
         Question question = questionMapper.selectByPrimaryKey(id);
         model.addAttribute("title", question.getTitle());
         model.addAttribute("description", question.getDescription());
         model.addAttribute("tag", question.getTag());
         model.addAttribute("id", question.getId());
-        return  "publish";
+        model.addAttribute("tags", TagCache.get());
+        return "publish";
     }
 
     @GetMapping("/publish")
-    public String publish() {
+    public String publish(Model model) {
+        model.addAttribute("tags", TagCache.get());
         return "publish";
     }
 
     @PostMapping("/publish")
     public String doPublish(
-            @RequestParam(value = "title",required = false) String title,
-            @RequestParam(value = "description",required = false) String description,
-            @RequestParam(value = "tag",required = false) String tag,
-            @RequestParam(value = "id",required = false) Long id,
+            @RequestParam(value = "title", required = false) String title,
+            @RequestParam(value = "description", required = false) String description,
+            @RequestParam(value = "tag", required = false) String tag,
+            @RequestParam(value = "id", required = false) Long id,
             HttpServletRequest request,
             Model model
     ) {
         model.addAttribute("title", title);
         model.addAttribute("description", description);
         model.addAttribute("tag", tag);
+        model.addAttribute("tags", TagCache.get());
 
         if (title == null || title == "") {
             model.addAttribute("error", "标题不能为空");
@@ -66,9 +71,14 @@ public class PublishController {
             model.addAttribute("error", "标签不能为空");
             return "publish";
         }
+        String invalid = TagCache.filterValid(tag);
+        if (StringUtils.isNotBlank(invalid)) {
+            model.addAttribute("error", "非法标签" + invalid);
+            return "publish";
+        }
 
 
-        User user = (User)request.getSession().getAttribute("user");
+        User user = (User) request.getSession().getAttribute("user");
 
         if (user == null) {
             model.addAttribute("error", "用户未登录");
