@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
     <script src="/js/jquery-3.4.1.min.js"></script>
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <script src="/js/community.js" type="application/javascript"></script>
 </head>
 <script type="application/javascript">
     window.onload = function () {
@@ -37,11 +38,11 @@
                     <h4 class="media-heading">
                         <a th:href="@{'question/'+${question.id}}" th:text="${question.title}"></a>
                     </h4>
-                    <span th:text="${question.getDescription()}"></span><br>
+                    <span th:text="${question.getDescription()}"></span>
                     <span class="text-desc">
-                    <span th:text="${question.commentCount}"></span>个回复·
-                    <span th:text="${question.viewCount}"></span>次浏览·
-                    <span th:text="${question.likeCount}"></span>个喜欢·
+                    <span class="glyphicon glyphicon-comment" th:text="${question.commentCount}"></span>
+                    <span class="glyphicon glyphicon-eye-open" th:text="${question.viewCount}"></span>
+                    <span class="glyphicon glyphicon-star-empty" th:text="${question.likeCount}" th:id="likespan" onclick="like(this)"></span>
                     <span th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}"></span></span>
                 </div>
             </div>

@@ -133,3 +133,7 @@ function selectTag(e) {
 function showSelectTag() {
     $("#select-tag").show();
 }
+
+function like(e) {
+    $(e).toggleClass("glyphicon-star-empty").toggleClass("glyphicon-star");
+}
