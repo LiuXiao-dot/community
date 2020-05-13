@@ -11,6 +11,7 @@ import xyz.lsxwy.community.exception.CustomizeException;
 import xyz.lsxwy.community.mapper.*;
 import xyz.lsxwy.community.model.*;
 
+import javax.management.Notification;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,9 @@ public class CommentService {
 
     @Autowired
     private CommentExtMapper commentExtMapper;
+
+    @Autowired
+    private Notification
 
     @Transactional
     public void insert(Comment comment) {
